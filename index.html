@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Beautiful Awesome Models</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+/* ================================================================
+   SYSTEM VARIABLES
+================================================================ */
+:root {
+  --desk-bg:       #08091a;
+  --win-bg:        #14152a;
+  --win-bg-inner:  #0e0f20;
+  --win-border-lt: #7070a8;
+  --win-border-dk: #080810;
+  --win-border:    #404068;
+  --tb-from:       #18306a;
+  --tb-to:         #4a32a0;
+  --tb-text:       #ffffff;
+  --taskbar-bg:    #0c0d1e;
+  --text:          #c8ccff;
+  --text-dim:      #50507a;
+  --text-hi:       #e8eaff;
+  --accent:        #6655cc;
+  --green:         #33dd77;
+  --font:          'VT323', 'Courier New', monospace;
+  --btn-face:      #a8a8c8;
+  --btn-lt:        #d8d8f0;
+  --btn-dk:        #303050;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--desk-bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: 42px;
+  color: var(--text);
+  cursor: default;
+  user-select: none;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 35% at 18% 25%, rgba(40,20,110,0.5) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 45% at 82% 72%, rgba(15,25,80,0.45) 0%, transparent 70%),
+    radial-gradient(ellipse 90% 70% at 50% 55%, rgba(4,4,22,0.85) 0%, transparent 100%);
+}
+
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at  7%  4%, rgba(255,255,255,.9) 100%, transparent),
+    radial-gradient(1px 1px at 14% 21%, rgba(200,200,255,.6) 100%, transparent),
+    radial-gradient(1px 1px at 22% 46%, rgba(255,255,255,.8) 100%, transparent),
+    radial-gradient(1px 1px at 30%  8%, rgba(180,180,255,.7) 100%, transparent),
+    radial-gradient(1px 1px at 41% 67%, rgba(255,255,255,.9) 100%, transparent),
+    radial-gradient(1px 1px at 49% 34%, rgba(200,200,255,.5) 100%, transparent),
+    radial-gradient(1px 1px at 57% 14%, rgba(255,255,255,.85) 100%, transparent),
+    radial-gradient(1px 1px at 66% 52%, rgba(180,180,255,.6) 100%, transparent),
+    radial-gradient(1px 1px at 73% 81%, rgba(255,255,255,.8) 100%, transparent),
+    radial-gradient(1px 1px at 82% 26%, rgba(200,200,255,.7) 100%, transparent),
+    radial-gradient(1px 1px at 90% 60%, rgba(255,255,255,.9) 100%, transparent),
+    radial-gradient(1px 1px at  4% 77%, rgba(180,180,255,.6) 100%, transparent),
+    radial-gradient(1px 1px at 11% 90%, rgba(255,255,255,.8) 100%, transparent),
+    radial-gradient(1px 1px at 19% 63%, rgba(200,200,255,.5) 100%, transparent),
+    radial-gradient(1px 1px at 27% 37%, rgba(255,255,255,.85) 100%, transparent),
+    radial-gradient(1px 1px at 35% 84%, rgba(180,180,255,.7) 100%, transparent),
+    radial-gradient(1px 1px at 43% 11%, rgba(255,255,255,.9) 100%, transparent),
+    radial-gradient(1px 1px at 52% 92%, rgba(200,200,255,.6) 100%, transparent),
+    radial-gradient(1px 1px at 60% 43%, rgba(255,255,255,.8) 100%, transparent),
+    radial-gradient(1px 1px at 69%  2%, rgba(180,180,255,.7) 100%, transparent),
+    radial-gradient(1px 1px at 77% 71%, rgba(255,255,255,.85) 100%, transparent),
+    radial-gradient(1px 1px at 86% 17%, rgba(200,200,255,.6) 100%, transparent),
+    radial-gradient(1px 1px at 94% 87%, rgba(255,255,255,.9) 100%, transparent),
+    radial-gradient(2px 2px at 32% 24%, rgba(180,190,255,0.65) 100%, transparent),
+    radial-gradient(2px 2px at 65% 74%, rgba(170,190,255,0.55) 100%, transparent),
+    radial-gradient(2px 2px at 87%  7%, rgba(190,175,255,0.6) 100%, transparent),
+    radial-gradient(2px 2px at 16% 56%, rgba(175,185,255,0.5) 100%, transparent);
+}
+
+/* ================================================================
+   MUSIC WIDGET
+================================================================ */
+#music-widget {
+  position: fixed; top: 10px; left: 12px; z-index: 850;
+  background: var(--win-bg);
+  border-top:    2px solid var(--win-border-lt);
+  border-left:   2px solid var(--win-border-lt);
+  border-bottom: 2px solid var(--win-border-dk);
+  border-right:  2px solid var(--win-border-dk);
+  outline: 1px solid var(--win-border);
+  box-shadow: 2px 2px 0 #000, 0 0 30px rgba(80,60,180,0.2);
+  min-width: 250px;
+}
+#music-titlebar {
+  background: linear-gradient(90deg, var(--tb-from), var(--tb-to));
+  height: 20px; padding: 0 5px;
+  display: flex; align-items: center; gap: 4px;
+}
+#music-titlebar .tb-icon { font-size: 12px; }
+#music-titlebar .tb-label { font-size: 14px; color: #fff; letter-spacing: 0.5px; flex: 1; }
+#music-body { padding: 7px 9px; display: flex; flex-direction: column; gap: 6px; }
+
+.now-playing { display: flex; align-items: center; gap: 7px; }
+.note-anim { font-size: 20px; color: #8888cc; animation: pnote 1.6s ease-in-out infinite alternate; }
+@keyframes pnote { from { opacity: 0.3; } to { opacity: 1; color: #b0b0ff; } }
+.track-info { flex: 1; overflow: hidden; }
+.track-name   { font-size: 16px; color: var(--text-hi); letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track-artist { font-size: 13px; color: var(--text-dim); letter-spacing: 0.5px; }
+
+.mus-btn {
+  background: linear-gradient(180deg, var(--btn-face) 0%, #8888b0 100%);
+  border-top:    1px solid var(--btn-lt);
+  border-left:   1px solid var(--btn-lt);
+  border-bottom: 1px solid var(--btn-dk);
+  border-right:  1px solid var(--btn-dk);
+  color: #00001a; font-family: var(--font); font-size: 14px;
+  padding: 1px 9px; cursor: pointer; height: 20px;
+  display: flex; align-items: center; white-space: nowrap;
+}
+.mus-btn:active {
+  border-top:    1px solid var(--btn-dk);
+  border-left:   1px solid var(--btn-dk);
+  border-bottom: 1px solid var(--btn-lt);
+  border-right:  1px solid var(--btn-lt);
+}
+
+.vol-row { display: flex; align-items: center; gap: 7px; }
+.vol-label { font-size: 13px; color: var(--text-dim); letter-spacing: 1px; white-space: nowrap; }
+input[type=range]#vol-slider {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  height: 14px;
+  background: var(--win-bg-inner);
+  border-top:    1px solid var(--win-border-dk);
+  border-left:   1px solid var(--win-border-dk);
+  border-bottom: 1px solid var(--win-border-lt);
+  border-right:  1px solid var(--win-border-lt);
+  outline: none; cursor: pointer;
+}
+input[type=range]#vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 22px;
+  background: linear-gradient(180deg, var(--btn-lt) 0%, var(--btn-face) 50%, #707090 100%);
+  border-top:    1px solid var(--btn-lt);
+  border-left:   1px solid var(--btn-lt);
+  border-bottom: 1px solid var(--btn-dk);
+  border-right:  1px solid var(--btn-dk);
+  cursor: pointer;
+}
+input[type=range]#vol-slider::-moz-range-thumb {
+  width: 12px; height: 22px;
+  background: linear-gradient(180deg, var(--btn-lt) 0%, var(--btn-face) 50%, #707090 100%);
+  border: 1px solid var(--btn-dk); cursor: pointer;
+}
+.vol-pct { font-size: 13px; color: var(--text-dim); min-width: 36px; text-align: right; }
+
+/* ================================================================
+   DESKTOP TITLE
+================================================================ */
+#desktop-title {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 34px 20px 2px;
+  user-select: none;
+}
+#site-name {
+  font-size: clamp(30px, 5vw, 50px);
+  color: var(--text-hi); letter-spacing: 3px; line-height: 1.1;
+  text-shadow: 0 0 24px rgba(100,80,220,0.45), 0 0 60px rgba(80,60,200,0.18);
+}
+.site-sub { font-size: 16px; color: var(--text-dim); letter-spacing: 6px; margin-top: 3px; }
+
+.desk-sep {
+  position: relative; z-index: 10;
+  text-align: center; margin: 12px auto 4px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  color: var(--text-dim); font-size: 15px; letter-spacing: 5px;
+}
+.desk-sep::before, .desk-sep::after {
+  content: '';
+  width: 100px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--win-border), transparent);
+}
+
+/* ================================================================
+   WINDOWS
+================================================================ */
+#windows-area { position: relative; z-index: 10; padding: 4px 0 24px; }
+
+.win-row { display: flex; padding: 8px 50px; }
+.win-row.left   { justify-content: flex-start; padding-left:  80px; }
+.win-row.right  { justify-content: flex-end;   padding-right: 80px; }
+.win-row.center { justify-content: center; }
+
+.window {
+  width: 330px;
+  background: var(--win-bg);
+  border-top:    2px solid var(--win-border-lt);
+  border-left:   2px solid var(--win-border-lt);
+  border-bottom: 2px solid var(--win-border-dk);
+  border-right:  2px solid var(--win-border-dk);
+  outline: 1px solid var(--win-border);
+  box-shadow: 3px 3px 0 #000, 0 0 28px rgba(60,40,160,0.18);
+  display: flex; flex-direction: column;
+  animation: win-in 0.22s ease both;
+  position: relative;
+}
+@keyframes win-in {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Title bar */
+.win-titlebar {
+  background: linear-gradient(90deg, var(--tb-from) 0%, var(--tb-to) 100%);
+  height: 22px; padding: 0 4px;
+  display: flex; align-items: center; gap: 4px;
+  cursor: move; flex-shrink: 0;
+}
+.win-icon {
+  width: 14px; height: 14px; flex-shrink: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='0' y='4' width='15' height='10' fill='%23b89010'/%3E%3Crect x='0' y='3' width='6' height='3' fill='%23b89010'/%3E%3Crect x='1' y='5' width='13' height='8' fill='%23e8c030'/%3E%3C/svg%3E");
+  background-size: contain; background-repeat: no-repeat;
+}
+.win-title {
+  font-size: 15px; color: #fff; flex: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  letter-spacing: 0.5px; line-height: 1;
+}
+.win-controls { display: flex; gap: 2px; flex-shrink: 0; }
+.wc-btn {
+  width: 16px; height: 14px;
+  background: linear-gradient(180deg, var(--btn-lt) 0%, var(--btn-face) 100%);
+  border-top:    1px solid var(--btn-lt);
+  border-left:   1px solid var(--btn-lt);
+  border-bottom: 1px solid var(--btn-dk);
+  border-right:  1px solid var(--btn-dk);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 10px; color: #00001a;
+  font-family: 'Courier New', monospace; font-weight: bold; line-height: 1;
+}
+.wc-btn:active {
+  border-top:    1px solid var(--btn-dk);
+  border-left:   1px solid var(--btn-dk);
+  border-bottom: 1px solid var(--btn-lt);
+  border-right:  1px solid var(--btn-lt);
+}
+
+/* Menu bar */
+.win-menubar {
+  background: var(--win-bg);
+  border-bottom: 1px solid var(--win-border-dk);
+  padding: 1px 2px;
+  display: flex; flex-shrink: 0; position: relative;
+}
+.menu-item {
+  font-size: 15px; color: var(--text);
+  padding: 1px 8px; cursor: default; letter-spacing: 0.5px;
+  position: relative;
+}
+.menu-item:hover, .menu-item.open { background: var(--tb-from); color: #fff; }
+.menu-item u { text-decoration: underline; }
+
+/* Dropdown */
+.dropdown {
+  display: none; position: absolute;
+  top: 100%; left: 0; z-index: 200;
+  background: var(--win-bg);
+  border-top:    1px solid var(--win-border-lt);
+  border-left:   1px solid var(--win-border-lt);
+  border-bottom: 1px solid var(--win-border-dk);
+  border-right:  1px solid var(--win-border-dk);
+  outline: 1px solid var(--win-border);
+  box-shadow: 2px 2px 0 #000;
+  min-width: 180px; padding: 2px 0;
+}
+.menu-item.open .dropdown { display: block; }
+.drop-item {
+  font-size: 15px; color: var(--text);
+  padding: 3px 20px 3px 10px; cursor: pointer;
+  letter-spacing: 0.5px; white-space: nowrap;
+  display: flex; align-items: center; gap: 8px;
+}
+.drop-item:hover { background: var(--accent); color: #fff; }
+.drop-icon { font-size: 13px; width: 16px; text-align: center; }
+.drop-sep {
+  height: 1px; margin: 3px 4px;
+  background: var(--win-border-dk);
+  box-shadow: 0 1px 0 var(--win-border-lt);
+}
+
+/* Body */
+.win-body { padding: 6px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.win-img {
+  width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+  border-top:    1px solid var(--win-border-dk);
+  border-left:   1px solid var(--win-border-dk);
+  border-bottom: 1px solid var(--win-border-lt);
+  border-right:  1px solid var(--win-border-lt);
+  background: var(--win-bg-inner);
+}
+.win-img-placeholder {
+  width: 100%; aspect-ratio: 4/3;
+  border-top:    1px solid var(--win-border-dk);
+  border-left:   1px solid var(--win-border-dk);
+  border-bottom: 1px solid var(--win-border-lt);
+  border-right:  1px solid var(--win-border-lt);
+  background: repeating-linear-gradient(45deg,#0a0a18 0,#0a0a18 8px,#080816 8px,#080816 16px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-dim); font-size: 14px; letter-spacing: 1px;
+}
+.win-info { padding: 2px 2px 0; }
+.win-name { font-size: 19px; color: var(--text-hi); letter-spacing: 1px; }
+.win-desc { font-size: 14px; color: var(--text-dim); letter-spacing: 0.5px; margin-top: 1px; }
+
+/* Status bar */
+.win-statusbar {
+  background: var(--win-bg);
+  border-top: 1px solid var(--win-border-dk);
+  padding: 2px 5px;
+  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
+.status-pane {
+  font-size: 13px; color: var(--text-dim);
+  border-top:    1px solid var(--win-border-dk);
+  border-left:   1px solid var(--win-border-dk);
+  border-bottom: 1px solid var(--win-border-lt);
+  border-right:  1px solid var(--win-border-lt);
+  padding: 0 5px; letter-spacing: 0.5px;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px var(--green); flex-shrink: 0; }
+
+.window.minimized .win-menubar,
+.window.minimized .win-body,
+.window.minimized .win-statusbar { display: none; }
+
+/* ================================================================
+   TASKBAR
+================================================================ */
+#taskbar {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 38px;
+  background: var(--taskbar-bg);
+  border-top: 2px solid var(--win-border-lt);
+  box-shadow: 0 -1px 0 var(--win-border-dk), 0 -8px 30px rgba(50,30,140,0.3);
+  display: flex; align-items: center; padding: 0 4px; gap: 4px;
+  z-index: 900;
+}
+#start-btn {
+  background: linear-gradient(180deg, #222248 0%, #141430 100%);
+  border-top:    1px solid var(--win-border-lt);
+  border-left:   1px solid var(--win-border-lt);
+  border-bottom: 1px solid var(--win-border-dk);
+  border-right:  1px solid var(--win-border-dk);
+  color: var(--text-hi); font-family: var(--font); font-size: 17px;
+  padding: 2px 14px; cursor: pointer; letter-spacing: 2px;
+  height: 28px; display: flex; align-items: center; gap: 7px;
+}
+#start-btn:active {
+  border-top:    1px solid var(--win-border-dk);
+  border-left:   1px solid var(--win-border-dk);
+  border-bottom: 1px solid var(--win-border-lt);
+  border-right:  1px solid var(--win-border-lt);
+}
+.start-gem {
+  width: 13px; height: 13px; flex-shrink: 0;
+  background: linear-gradient(135deg, #5588ff 0%, #aa44ff 50%, #ff44aa 100%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.tb-sep { width: 1px; height: 26px; background: var(--win-border-dk); box-shadow: 1px 0 0 var(--win-border-lt); flex-shrink: 0; }
+#tb-items { display: flex; gap: 3px; flex: 1; overflow: hidden; }
+.tb-item {
+  background: linear-gradient(180deg, #1c1c3c 0%, #141428 100%);
+  border-top:    1px solid var(--win-border-lt);
+  border-left:   1px solid var(--win-border-lt);
+  border-bottom: 1px solid var(--win-border-dk);
+  border-right:  1px solid var(--win-border-dk);
+  color: var(--text); font-family: var(--font); font-size: 14px;
+  padding: 1px 8px; cursor: pointer; letter-spacing: 0.5px;
+  height: 26px; max-width: 150px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  display: flex; align-items: center; gap: 4px;
+}
+.tb-item:active {
+  border-top:    1px solid var(--win-border-dk);
+  border-left:   1px solid var(--win-border-dk);
+  border-bottom: 1px solid var(--win-border-lt);
+  border-right:  1px solid var(--win-border-lt);
+}
+.tb-item-icon {
+  width: 12px; height: 12px; flex-shrink: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='0' y='4' width='15' height='10' fill='%23b89010'/%3E%3Crect x='0' y='3' width='6' height='3' fill='%23b89010'/%3E%3Crect x='1' y='5' width='13' height='8' fill='%23e8c030'/%3E%3C/svg%3E");
+  background-size: contain; background-repeat: no-repeat;
+}
+#sys-tray {
+  display: flex; align-items: center; gap: 8px;
+  background: #0a0a1c;
+  border-top:    1px solid var(--win-border-dk);
+  border-left:   1px solid var(--win-border-dk);
+  border-bottom: 1px solid var(--win-border-lt);
+  border-right:  1px solid var(--win-border-lt);
+  padding: 2px 10px; height: 28px; margin-left: auto; flex-shrink: 0;
+}
+#clock { font-size: 16px; color: var(--text); letter-spacing: 1px; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 16px; }
+::-webkit-scrollbar-track { background: #0e0f20; border-left: 1px solid var(--win-border-dk); }
+::-webkit-scrollbar-thumb {
+  background: #383860;
+  border-top: 1px solid var(--win-border-lt); border-left: 1px solid var(--win-border-lt);
+  border-bottom: 1px solid var(--win-border-dk); border-right: 1px solid var(--win-border-dk);
+}
+::-webkit-scrollbar-button {
+  height: 16px; background: #20203c;
+  border-top: 1px solid var(--win-border-lt); border-left: 1px solid var(--win-border-lt);
+  border-bottom: 1px solid var(--win-border-dk); border-right: 1px solid var(--win-border-dk);
+}
+</style>
+</head>
+<body>
+
+<audio id="bgm" loop preload="auto">
+  <source src="https://raw.githubusercontent.com/langrab22-png/CoolWebsite/main/Lush%20Crayon%20-%20%EF%BC%AC%EF%BC%A9%EF%BC%B3%CE%9B%20%E3%81%AC%E3%81%84%E3%81%90%E3%82%8B%E3%81%BF%E3%82%AF%E3%83%AC%E3%83%A8%E3%83%B3.mp3" type="audio/mpeg">
+</audio>
+
+<div class="stars"></div>
+
+<!-- ── Music Widget ── -->
+<div id="music-widget">
+  <div id="music-titlebar">
+    <span class="tb-icon">♪</span>
+    <span class="tb-label">Now Playing</span>
+  </div>
+  <div id="music-body">
+    <div class="now-playing">
+      <span class="note-anim">♫</span>
+      <div class="track-info">
+        <!-- ✏️ Song name / artist -->
+        <div class="track-name">L I S A</div>
+        <div class="track-artist">Lush Crayon</div>
+      </div>
+      <button class="mus-btn" id="music-toggle" onclick="toggleMusic()">⏸ Pause</button>
+    </div>
+    <div class="vol-row">
+      <span class="vol-label">VOL</span>
+      <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0.8"
+             oninput="setVolume(this.value)">
+      <span class="vol-pct" id="vol-pct">80%</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Desktop Title ── -->
+<div id="desktop-title">
+  <!-- ✏️ Page title -->
+  <div id="site-name">My Beautiful Awesome Models</div>
+  <div class="site-sub">3D Gallery</div>
+</div>
+<div class="desk-sep">3D Models</div>
+
+<!-- ── Model Windows ── -->
+<div id="windows-area"></div>
+
+<!-- ── Taskbar ── -->
+<div id="taskbar">
+  <button id="start-btn" onclick="restoreAll()">
+    <span class="start-gem"></span>Start
+  </button>
+  <div class="tb-sep"></div>
+  <div id="tb-items"></div>
+  <div id="sys-tray"><span id="clock">00:00</span></div>
+</div>
+
+<script>
+/* ================================================================
+   ✏️ MODELS — add/remove objects here to add/remove windows.
+
+   img:      raw GitHub image URL
+   download: file to download when user clicks File → Save Image As
+             (can be same as img, or a .blend file, etc.)
+   tag:      shown in the status bar
+================================================================ */
+const MODELS = [
+  {
+    title:    "PS1 Nature Render",
+    name:     "Calming Tree",
+    desc:     "Made this because I was inspired, and I haven't tried the style yet! This is my first PS1 styled blender project.",
+    img:      "https://raw.githubusercontent.com/langrab22-png/CoolWebsite/main/PS1NatureRender.png",
+    download: "https://raw.githubusercontent.com/langrab22-png/CoolWebsite/main/PS1NatureRenderDownload.png",
+    tag:      "Blender · 2026"
+  },
+  {
+    title:    "PS1 City Render",
+    name:     "Chill City",
+    desc:     "This is me trying out the PS1 style a tiny bit more. I learned a few new things from this!",
+    img:      "https://raw.githubusercontent.com/langrab22-png/CoolWebsite/main/PS1CityRender.png",
+    download: "https://raw.githubusercontent.com/langrab22-png/CoolWebsite/main/PS1CityRenderDownload.png",
+    tag:      "Blender · 2026"
+  },
+  
+  /* ── Copy a block above and paste here to add another window ── */
+];
+
+const ZZ = ['left', 'right', 'center', 'left', 'right', 'center'];
+
+/* ── Download helper: fetch → blob → save; fallback to new tab ── */
+async function downloadFile(url, filename) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error();
+    const blob = await res.blob();
+    const a = Object.assign(document.createElement('a'), {
+      href: URL.createObjectURL(blob), download: filename
+    });
+    document.body.appendChild(a);
+    a.click(); a.remove();
+    URL.revokeObjectURL(a.href);
+  } catch {
+    window.open(url, '_blank');
+  }
+}
+
+/* ── Render all windows ── */
+function renderAll() {
+  const area = document.getElementById('windows-area');
+  const tbi  = document.getElementById('tb-items');
+  area.innerHTML = ''; tbi.innerHTML = '';
+
+  MODELS.forEach((m, i) => {
+    const pos = ZZ[i % ZZ.length];
+    const row = document.createElement('div');
+    row.className = `win-row ${pos}`;
+
+    const win = document.createElement('div');
+    win.className = 'window'; win.id = `win-${i}`;
+    win.style.animationDelay = `${i * 0.07}s`;
+
+    const ph = !m.img || m.img.includes('YOUR_USERNAME');
+    const imgHTML = ph
+      ? `<div class="win-img-placeholder">[ add image URL ]</div>`
+      : `<img class="win-img" src="${m.img}" alt="${m.name}" loading="lazy"
+             onerror="this.outerHTML='<div class=\\'win-img-placeholder\\'>[ image not found ]</div>'">`;
+
+    const dlUrl  = m.download || m.img || '#';
+    const dlName = m.title || 'model';
+
+    win.innerHTML = `
+      <div class="win-titlebar" onmousedown="dragStart(event,${i})">
+        <span class="win-icon"></span>
+        <span class="win-title">${m.title}</span>
+        <div class="win-controls">
+          <div class="wc-btn" title="Minimize" onclick="minWin(${i})">_</div>
+          <div class="wc-btn" title="Close"    onclick="closeWin(${i})">✕</div>
+        </div>
+      </div>
+      <div class="win-menubar">
+        <div class="menu-item" id="mi-file-${i}" onclick="toggleMenu(${i})">
+          <u>F</u>ile
+          <div class="dropdown">
+            <div class="drop-item" onclick="downloadFile('${dlUrl}','${dlName}')">
+              <span class="drop-icon">💾</span>Save Image As...
+            </div>
+            <div class="drop-item" onclick="window.open('${dlUrl}','_blank')">
+              <span class="drop-icon">🔗</span>Open in New Tab
+            </div>
+            <div class="drop-sep"></div>
+            <div class="drop-item" onclick="closeWin(${i})">
+              <span class="drop-icon">✕</span>Close
+            </div>
+          </div>
+        </div>
+        <div class="menu-item"><u>V</u>iew</div>
+        <div class="menu-item"><u>H</u>elp</div>
+      </div>
+      <div class="win-body">
+        ${imgHTML}
+        <div class="win-info">
+          <div class="win-name">${m.name}</div>
+          ${m.desc ? `<div class="win-desc">${m.desc}</div>` : ''}
+        </div>
+      </div>
+      <div class="win-statusbar">
+        <span class="status-dot"></span>
+        <span class="status-pane">${m.tag || '3D Model'}</span>
+      </div>`;
+
+    row.appendChild(win);
+    area.appendChild(row);
+
+    const btn = document.createElement('div');
+    btn.className = 'tb-item'; btn.id = `tb-${i}`;
+    btn.innerHTML = `<span class="tb-item-icon"></span>${m.title}`;
+    btn.onclick = () => restoreWin(i);
+    tbi.appendChild(btn);
+  });
+
+  /* Close all dropdowns when clicking outside */
+  document.addEventListener('click', e => {
+    document.querySelectorAll('.menu-item.open').forEach(el => {
+      if (!el.contains(e.target)) el.classList.remove('open');
+    });
+  });
+}
+
+function toggleMenu(i) {
+  const el = document.getElementById(`mi-file-${i}`);
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.menu-item.open').forEach(x => x.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+
+/* ── Window controls ── */
+function minWin(i) { document.getElementById(`win-${i}`)?.classList.toggle('minimized'); }
+function closeWin(i) {
+  document.getElementById(`win-${i}`)?.parentElement && (document.getElementById(`win-${i}`).parentElement.style.display = 'none');
+  const t = document.getElementById(`tb-${i}`); if (t) t.style.opacity = '0.4';
+}
+function restoreWin(i) {
+  const r = document.getElementById(`win-${i}`)?.parentElement;
+  if (r) r.style.display = '';
+  document.getElementById(`win-${i}`)?.classList.remove('minimized');
+  const t = document.getElementById(`tb-${i}`); if (t) t.style.opacity = '1';
+  document.getElementById(`win-${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function restoreAll() { MODELS.forEach((_, i) => restoreWin(i)); }
+
+/* ── Drag ── */
+let drag = null, dox = 0, doy = 0;
+function dragStart(e, i) {
+  const w = document.getElementById(`win-${i}`);
+  if (!w) return;
+  const r = w.getBoundingClientRect();
+  w.style.cssText += `position:fixed;left:${r.left}px;top:${r.top}px;z-index:800;margin:0;`;
+  document.body.appendChild(w);
+  drag = w; dox = e.clientX - r.left; doy = e.clientY - r.top;
+  e.preventDefault();
+}
+document.addEventListener('mousemove', e => { if (drag) { drag.style.left = (e.clientX - dox) + 'px'; drag.style.top = (e.clientY - doy) + 'px'; } });
+document.addEventListener('mouseup', () => { drag = null; });
+
+/* ── Clock ── */
+(function tick() {
+  const d = new Date();
+  document.getElementById('clock').textContent =
+    String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+  setTimeout(tick, 5000);
+})();
+
+/* ── Music ── */
+let playing = false;
+function toggleMusic() {
+  const a = document.getElementById('bgm'), b = document.getElementById('music-toggle');
+  if (playing) { a.pause(); b.textContent = '▶ Play'; playing = false; }
+  else { a.play().catch(()=>{}); b.textContent = '⏸ Pause'; playing = true; }
+}
+function setVolume(v) {
+  document.getElementById('bgm').volume = v;
+  document.getElementById('vol-pct').textContent = Math.round(v * 100) + '%';
+}
+document.addEventListener('click', function once() {
+  const a = document.getElementById('bgm');
+  a.volume = parseFloat(document.getElementById('vol-slider').value);
+  a.play().then(() => { playing = true; document.getElementById('music-toggle').textContent = '⏸ Pause'; }).catch(()=>{});
+  document.removeEventListener('click', once);
+}, { once: true });
+
+renderAll();
+</script>
+</body>
+</html>
